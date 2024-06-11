@@ -6,3 +6,6 @@ memo/**
 rev/**
 **/__pycache__
 *.pyc
+!memo/ProxieL Bot.txt
+!rev/ProxieL Bot
+!rev/ProxieL Bot/**

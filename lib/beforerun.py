@@ -9,10 +9,6 @@ def varset(): # 변수 설정
     global token
     global prefix
 
-    pyset = open("test.py", "w", encoding="utf8")
-    pyset.write("")
-    pyset.close()
-
     tokenfile = open("res"+sp+"security"+sp+"token.txt", "r")
     token = tokenfile.read()
     tokenfile.close()
