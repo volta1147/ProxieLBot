@@ -1,0 +1,8 @@
+res/security/token.txt
+levellist/**
+profile/**
+profilerev/**
+memo/**
+rev/**
+lib/__pycache__
+*.pyc
