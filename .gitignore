@@ -4,5 +4,5 @@ profile/**
 profilerev/**
 memo/**
 rev/**
-lib/__pycache__
+**/__pycache__
 *.pyc
