@@ -15,4 +15,4 @@
 | ~~Admin.py~~ | **설치 시 기본제공** | - |
 | Botplus.py | - | 랜덤 리스트 추첨 기능 제작 시 file 라이브러리 필요할 예정 |
 | Memo.py | *botsetup.py*, file.py, MemoUI.py | - |
-| Tts.py | [gTTS](<https://pypi.org/project/gTTS/>), *botsetup.py* | 사용 시 ffmpeg가 PATH에 포함되어 있어야 됨 |
+| Tts.py | [gTTS](<https://pypi.org/project/gTTS/>), discord.py[voice] *botsetup.py* | 사용 시 ffmpeg가 PATH에 포함되어 있어야 됨. voice는 ```pip install discord.py[voice]``` 를 이용하여 설치 가능 |
