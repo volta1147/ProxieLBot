@@ -8,7 +8,7 @@
 | MemoUI.py | *botsetup.py*, file.py |
 
 ## 추가 기능
-외부 라이브러리(pip install ~~ 등을 사용하는) 는 경우에는 링크를 걸어두었다. 
+외부 라이브러리(pip install ~~ 등을 사용하는) 는 경우에는 링크를 걸어두었다. 예시 : [discord.py](<https://pypi.org/project/discord.py/>)
 
 | 추가 기능 이름 | 참조하는 라이브러리 | 참고사항 |
 |-|-|-|
