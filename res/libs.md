@@ -1,5 +1,11 @@
 # 라이브러리 상하관계
 
+외부 라이브러리(pip install ~~ 등을 사용하는) 는 경우에는 링크를 걸어두었다. 예시 : [discord.py](<https://pypi.org/project/discord.py/>)
+
+| 파일 | 참조하는 라이브러리 |
+|-|-|
+| 이 프로그램의 모든 파일들 | [discord.py](<https://pypi.org/project/discord.py/>) |
+
 ## 기본 라이브러리
 | 라이브러리 이름 | 참조하는 라이브러리 |
 |-|-|
@@ -8,7 +14,6 @@
 | MemoUI.py | *botsetup.py*, file.py |
 
 ## 추가 기능
-외부 라이브러리(pip install ~~ 등을 사용하는) 는 경우에는 링크를 걸어두었다. 예시 : [discord.py](<https://pypi.org/project/discord.py/>)
 
 | 추가 기능 이름 | 참조하는 라이브러리 | 참고사항 |
 |-|-|-|
