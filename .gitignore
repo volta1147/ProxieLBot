@@ -1,4 +1,4 @@
-res/security/token.txt
+res/security/**
 levellist/**
 profile/**
 profilerev/**
@@ -6,6 +6,9 @@ memo/**
 rev/**
 **/__pycache__
 *.pyc
+voice.mp3
+!res/security/securityfiles.txt
 !memo/ProxieL Bot.txt
 !rev/ProxieL Bot
 !rev/ProxieL Bot/**
+test

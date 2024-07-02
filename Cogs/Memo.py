@@ -1,39 +1,19 @@
 import discord
+from discord import app_commands
 from discord.ext import commands
 import os
 import sys
+import asyncio
+
 sys.path.append('')
 
-import lib.beforerun as bs
+import lib.botsetup as bs
 import lib.file as file
+import lib.MemoUI as MemoUI
 
 pffile = open("res" + os.path.sep + "memoprefix.txt")
 pf = pffile.read()
 pffile.close()
-
-def getusercolor(ctx, userid):
-    color = 0x000000
-    for i in ctx.guild.roles:
-        if userid in [j.id for j in i.members]:
-            color = str(i.color)
-    return int("0x"+color[1:], 16)
-
-async def sendprofileembed(ctx, userinfo, pfver = -1):
-    name = userinfo.name
-    userid = userinfo.id
-    if os.path.exists("profilerev" + os.path.sep + str(userid)):
-        if pfver + 1:
-            ver = pfver
-        else:
-            ver = file.getver('profilerev', str(userid))
-        if file.isrev('profilerev', str(userid), ver):
-            embed = discord.Embed(title = name, description = file.openrev("profilerev", str(userid), ver), color = getusercolor(ctx, userid))
-            embed.set_footer(text = file.memover('profile', str(name), ver))
-            await ctx.send(embed = embed)
-        else:
-            await ctx.send("해당 버전이 없습니다. ")
-    else:
-        await ctx.send("아직 작성된 자기소개가 없습니다. 자기소개를 작성하려면 ```" + bs.prefix + "introduce 자기소개```를 입력해주세요.")
 
 class Memo(commands.Cog):
     def __init__(self, bot):
@@ -45,7 +25,7 @@ class Memo(commands.Cog):
             await ctx.send("명령어가 올바르지 않습니다. ")
 
     @memo.command(name = "open", help = "메모를 출력합니다.")
-    async def openm(self, ctx, *, filenamein):
+    async def openm(self, ctx:commands.Context, *, filenamein):
         if (file.openfile("memo", filenamein).split())[0] == pf + "redirect":
             filename = " ".join((file.openfile("memo", filenamein).split())[1:])
         else:
@@ -53,7 +33,9 @@ class Memo(commands.Cog):
         if file.ismemo(filename):
             embed = discord.Embed(title = filename, description = file.openfile("memo", filename), color = 0xbdb092)
             embed.set_footer(text = file.memover('memo', filename, file.getver('rev', filename)))
-            await ctx.send(embed = embed)
+            memoembed = await ctx.send(embed = embed, view=MemoUI.MemoUIBeta())
+            await asyncio.sleep(30)
+            await memoembed.edit(view=None)
         else:
             await ctx.send(filename+" 메모가 없습니다. "+filename+" 메모를 생성하려면 \n```"+bs.prefix+"memo edit "+filename+" 메모 내용```\n 을 입력하세요.")
 
@@ -85,7 +67,7 @@ class Memo(commands.Cog):
             userinfo = ctx.message.author
         else:
             userinfo = await commands.MemberConverter.convert(self=commands.MemberConverter, ctx=ctx, argument=user)
-        await sendprofileembed(ctx, userinfo, -1)
+        await MemoUI.sendprofileembed(ctx, userinfo, -1)
 
     @commands.command(help = "자기소개를 작성/수정합니다. ")
     async def introduce(self, ctx, *, memo):
@@ -120,12 +102,12 @@ class Memo(commands.Cog):
     @rev.command(name = "profile", help = "맨션한 유저의 유저 정보 리버전을 불러옵니다. ")
     async def pfrev(self, ctx, user, pfver = -1):
         userinfo = await commands.MemberConverter.convert(self=commands.MemberConverter, ctx=ctx, argument=user)
-        await sendprofileembed(ctx, userinfo, pfver)
+        await MemoUI.sendprofileembed(ctx, userinfo, pfver)
 
-    @rev.command(name = "myprofile")
+    @rev.command(name = "myprofile", help = "자신의 유저 정보 리버전을 불러옵니다. ")
     async def mypfrev(self, ctx, pfver = -1):
         userinfo = ctx.message.author
-        await sendprofileembed(ctx, userinfo, pfver)
+        await MemoUI.sendprofileembed(ctx, userinfo, pfver)
     
     @commands.group(name = "back", help = "메모 되돌리기 관련")
     async def backrev(self, ctx):
@@ -140,6 +122,18 @@ class Memo(commands.Cog):
             await ctx.send("되돌리기 완료!")
         else:
             await ctx.send("해당 버전이 없습니다. ")
+
+    '''========== 여기까지 메모 기본 엔진, 아래부터 메모 틀 관련 =========='''
+
+    uitest = app_commands.Group(name="memoui", description="인터페이스 실험용")
+
+    @uitest.command(name = "menu", description = "메뉴창 테스트")
+    async def selecttest(self, interaction:discord.Interaction):
+        await interaction.response.send_message(content="실행할 동작을 골라주세요. ", view=MemoUI.Select(), ephemeral=True)
+
+    @uitest.command(name = "editor", description = "메시지 수정 테스트")
+    async def modaltest(self, interaction:discord.Interaction):
+        await interaction.response.send_modal(MemoUI.WriteModal())
         
 async def setup(bot):
     await bot.add_cog(Memo(bot))

@@ -1,10 +1,7 @@
 import discord
-import os
-import lib.beforerun as bs
-import lib.file as file
 from discord.ext import commands
-
-ussr = 0
+import os
+import lib.botsetup as bs
 
 bs.varset()
 
@@ -31,6 +28,8 @@ async def load_extensions():
         print("{0}개 중 {1}개 추가 기능에서 오류가 발생했습니다. ".format(cogsnum, len(errd)))
         for i in list(errd.items()):
             print(i[0]+" :"+str(i[1]).split(":")[2])
+    synced = await bot.tree.sync()
+    print(f"{len(synced)}개의 슬래시 커맨드 활성화")
 
 @bot.event
 async def on_ready():
@@ -46,6 +45,13 @@ async def ping(ctx):
 async def echo(ctx, *, abc):
     await ctx.send(abc)
 
+@bot.command(help = "봇을 종료합니다. 봇 관리자만 이용 가능")
+async def shutdown(ctx):
+    if ctx.message.author.id == int(bs.myid):
+        await ctx.send("종료중...")
+        await bot.close()
+    else:
+        await ctx.send("개발자만 종료할 수 있습니다. ")
 bot.run(bs.token)
 
 # ProxieLBot

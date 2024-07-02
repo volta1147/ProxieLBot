@@ -4,7 +4,7 @@ import sys
 
 sys.path.append('')
 
-import lib.beforerun as bs
+# 여기에 사용자 정의 라이브러리 넣기
 
 class Admin(commands.Cog):
     def __init__(self, bot):

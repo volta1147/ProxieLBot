@@ -1,15 +1,17 @@
 import discord
-import subprocess
-import random
+from discord import app_commands
 from discord.ext import commands
 import sys
+import random
+import asyncio
 
 sys.path.append('')
-import lib.file as file
+
+# 여기에 사용자 정의 라이브러리 넣기
 
 class ButtonFunction(discord.ui.View):
     def __init__(self):
-        super().__init__(timeout=60)
+        super().__init__(timeout=30)
 
     @discord.ui.button(label='엄 출력하기', style=discord.ButtonStyle.blurple)
     async def button1(self, interaction: discord.Interaction, button: discord.ui.Button):
@@ -19,9 +21,13 @@ class Botplus(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    @commands.Cog.listener()
+    async def on_ready(self):
+        print("Slash cog loaded")
+
     @commands.command(name = "print", help = "입력한 내용을 출력합니다 (원본 메시지 삭제)")
     async def printctx(self, ctx, *, abc):
-        await ctx.channel.purge(limit=1)
+        await ctx.message.delete() # ctx.channel.purge(limit=1)
         await ctx.send(abc)
     
     @commands.command(name = "random", help = "주어진 단어 중 하나를 선택합니다. ")
@@ -59,8 +65,15 @@ class Botplus(commands.Cog):
     #         await ctx.send("{} 리스트가 존재하지 않습니다. ".format(listname))
 
     @commands.command(name = "um", help = "엄")
-    async def bttest(self, ctx):
-        await ctx.send("어음", view=ButtonFunction())
+    async def bttest(self, ctx:commands.Context):
+        testmsg = await ctx.send("어음", view=ButtonFunction())
+        await asyncio.sleep(30)
+        await testmsg.edit(view=None)
+
+    @app_commands.command(name = "slashprint", description="입력한 내용을 출력합니다")
+    @app_commands.describe(text='적을 내용')
+    async def printctx2(self, interaction: discord.Interaction, text:str):
+        await interaction.response.send_message(f"{text}")
     
-async def setup(bot):
+async def setup(bot:commands.bot):
     await bot.add_cog(Botplus(bot))

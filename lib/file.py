@@ -51,14 +51,14 @@ def rev(folder, filename, memo):
     if not os.path.exists(dr):
         os.makedirs(dr)
     else:
-        revfile = open(dr+os.path.sep+"rev.txt", "r")
+        revfile = open(dr+os.path.sep+"rev.txt", "r", encoding="utf8")
         revv = int(revfile.read())
         revfile.close()
         revv += 1
-    revfile = open(dr+os.path.sep+"rev.txt", "w")
+    revfile = open(dr+os.path.sep+"rev.txt", "w", encoding="utf8")
     revfile.write(str(revv))
     revfile.close()
-    file = open(dr+os.path.sep+"rev{}.txt".format(str(revv)), "w")
+    file = open(dr+os.path.sep+"rev{}.txt".format(str(revv)), "w", encoding="utf8")
     file.write(memo)
     file.close()
 
@@ -66,11 +66,11 @@ def isrev(folder, filename, ver):
     return os.path.isfile(folder+os.path.sep+filename+os.path.sep+"rev{}.txt".format(ver))
 
 def openrev(folder, filename, ver):
-    revfile = open(folder+os.path.sep+filename+os.path.sep+"rev{}.txt".format(ver), "r")
+    revfile = open(folder+os.path.sep+filename+os.path.sep+"rev{}.txt".format(ver), "r", encoding="utf8")
     return revfile.read()
 
 def getver(folder, filename):
-    revfile = open(folder+os.path.sep+filename+os.path.sep+"rev.txt", "r")
+    revfile = open(folder+os.path.sep+filename+os.path.sep+"rev.txt", "r", encoding="utf8")
     return revfile.read()
 
 def memover(tp, name, rev):
