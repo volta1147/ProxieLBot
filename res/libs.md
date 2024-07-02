@@ -4,7 +4,7 @@
 
 | 파일 | 참조하는 라이브러리 |
 |-|-|
-| 이 프로그램의 모든 파일들 | [discord.py](<https://pypi.org/project/discord.py/>) |
+| **이 프로그램의 모든 파일들** | [discord.py](<https://pypi.org/project/discord.py/>) |
 
 ## 기본 라이브러리
 | 라이브러리 이름 | 참조하는 라이브러리 |
